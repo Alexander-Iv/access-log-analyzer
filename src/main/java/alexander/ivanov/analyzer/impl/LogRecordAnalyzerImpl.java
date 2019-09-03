@@ -23,9 +23,7 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
         return data
                 .map(s -> s.split(" "))
                 //.peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
-                .map(strings -> LogRecordMapper.map(new LogRecordDto(strings[3].substring(1), strings[8], strings[10])))
-                /*.convert(logRecord -> (logRecord.getHttpStatusCode() >= 500 && logRecord.getHttpStatusCode() < 600)
-                        || logRecord.getProcessingTimeMs() > 45)*/;
+                .map(strings -> LogRecordMapper.map(new LogRecordDto(strings[3].substring(1), strings[8], strings[10])));
     }
 
     @Override
@@ -47,8 +45,8 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
                 float currAccessibility = calcAccessibility(successCount, quantity);
                 if (accessibility < currAccessibility) {
                     logger.info("from = {}, to = {}, accessibility = {}"
-                            , DateFormatter.toString(new Date(from))
-                            , DateFormatter.toString(new Date(to))
+                            , DateFormatter.toStringFormat(new Date(from))
+                            , DateFormatter.toStringFormat(new Date(to))
                             , String.format("%.02f", currAccessibility));
                 }
             }

@@ -45,7 +45,7 @@ public class LogRecord {
     @Override
     public String toString() {
         return "LogRecord{" +
-                "date=" + DateFormatter.toString(date) +
+                "date=" + DateFormatter.toStringFormat(date) +
                 ", httpStatusCode=" + httpStatusCode +
                 ", processingTimeMs=" + processingTimeMs +
                 '}';

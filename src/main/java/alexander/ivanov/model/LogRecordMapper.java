@@ -25,7 +25,7 @@ public class LogRecordMapper {
     private static class LogRecordDateConverter extends AbstractConverter<String, Date> {
         @Override
         protected Date convert(String source) {
-            return DateFormatter.toDate(source);
+            return DateFormatter.toDateFormat(source);
         }
     }
 }
