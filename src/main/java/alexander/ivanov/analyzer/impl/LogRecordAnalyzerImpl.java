@@ -4,19 +4,18 @@ import alexander.ivanov.analyzer.LogRecordAnalyzer;
 import alexander.ivanov.model.LogRecord;
 import alexander.ivanov.model.LogRecordDto;
 import alexander.ivanov.model.LogRecordMapper;
-import alexander.ivanov.util.DateFormatter;
+import alexander.ivanov.model.ResultRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     private static final Logger logger = LoggerFactory.getLogger(LogRecordAnalyzerImpl.class);
+    private static final List<ResultRecord> resultRecords = new ArrayList<>();
 
     @Override
     public Stream<LogRecord> convert(Stream<String> data) {
@@ -43,13 +42,21 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
                 float quantity = successCount + failureCount;
 
                 float currAccessibility = calcAccessibility(successCount, quantity);
-                if (accessibility < currAccessibility) {
-                    logger.info("from = {}, to = {}, accessibility = {}"
-                            , DateFormatter.toStringFormat(new Date(from))
-                            , DateFormatter.toStringFormat(new Date(to))
-                            , String.format("%.02f", currAccessibility));
+                if (currAccessibility < accessibility) {
+                    resultRecords.add(new ResultRecord(new Date(from), new Date(to), currAccessibility));
                 }
             }
+        });
+    }
+
+    @Override
+    public void printResult() {
+        logger.info("LogRecordAnalyzerImpl.printResult");
+
+        resultRecords.sort(Comparator.comparing(o -> o.startDate));
+
+        resultRecords.forEach(resultRecord -> {
+            logger.info("{}", resultRecord);
         });
     }
 
