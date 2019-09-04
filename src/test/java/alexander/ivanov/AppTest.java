@@ -1,6 +1,7 @@
 package alexander.ivanov;
 
-import alexander.ivanov.impl.AppImpl;
+import alexander.ivanov.app.App;
+import alexander.ivanov.app.impl.impl.AppImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

@@ -32,8 +32,9 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
         );
 
         result.forEach((aBoolean, logRecords) -> {
-            if (aBoolean) {
+            if (aBoolean && !logRecords.isEmpty()) {
                 //printLogRecords(logRecords);
+
                 long from = getMinDate(getTimeStream(logRecords));
                 long to = getMaxDate(getTimeStream(logRecords));
 
@@ -51,13 +52,8 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
 
     @Override
     public void printResult() {
-        logger.info("LogRecordAnalyzerImpl.printResult");
-
         resultRecords.sort(Comparator.comparing(o -> o.startDate));
-
-        resultRecords.forEach(resultRecord -> {
-            logger.info("{}", resultRecord);
-        });
+        resultRecords.forEach(System.out::println);
     }
 
     @Override

@@ -1,11 +1,10 @@
-package alexander.ivanov.impl;
+package alexander.ivanov.app.impl.impl;
 
-import alexander.ivanov.App;
+import alexander.ivanov.app.App;
 import alexander.ivanov.analyzer.Analyzer;
 import alexander.ivanov.analyzer.LogRecordAnalyzer;
 import alexander.ivanov.analyzer.impl.LogRecordAnalyzerImpl;
 import alexander.ivanov.model.LogRecord;
-import alexander.ivanov.model.ResultRecord;
 import alexander.ivanov.reader.impl.BufferedReaderCreatorImpl;
 import alexander.ivanov.util.CliHelper;
 import alexander.ivanov.util.ErrorHandler;
@@ -16,8 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -44,9 +41,6 @@ public class AppImpl implements App {
 
     @Override
     public void init() {
-        logger.info("App.initOpts");
-        logger.info("args = {}", Arrays.asList(args));
-
         CliHelper.parseArgs(args);
 
         time = CliHelper.getTimeValue();
@@ -54,17 +48,16 @@ public class AppImpl implements App {
         linesCount = CliHelper.getLinesValue();
         fileName = CliHelper.getFileNameValue();
 
-        logger.info("time = {}", time);
-        logger.info("accessibility = {}", accessibility);
-        logger.info("lines = {}", linesCount);
-        logger.info("fileName = {}", fileName);
-
         analyzer = new LogRecordAnalyzerImpl();
         bufferedReader = new BufferedReaderCreatorImpl(fileName).getReader();
     }
 
     @Override
     public void run() {
+        if (CliHelper.isHelpExists()) {
+            CliHelper.printHelp();
+            return;
+        }
         analyzeInputStream();
     }
 

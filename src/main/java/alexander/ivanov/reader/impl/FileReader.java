@@ -26,15 +26,8 @@ public class FileReader implements Reader<BufferedReader> {
     }
 
     private BufferedReader getFileReader(String fileName) {
-        logger.info("FileReader.read");
-        logger.info("fileName = {}", fileName);
-
         Path filePath = getFilePathFromCurrentDir(fileName);
-        logger.info("filePath = {}", filePath);
-
         boolean isFileExists = isFileExists(filePath);
-        logger.info("isFileExists = {}", isFileExists);
-
         if (isFileExists) {
             try {
                 return Files.newBufferedReader(filePath);
@@ -48,7 +41,7 @@ public class FileReader implements Reader<BufferedReader> {
     }
 
     private Path getFilePathFromCurrentDir(String fileName) {
-        return Paths.get("./", fileName);
+        return Paths.get(/*"./", */fileName);
     }
 
     private boolean isFileExists(Path path) {

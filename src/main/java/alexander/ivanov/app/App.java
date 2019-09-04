@@ -1,4 +1,4 @@
-package alexander.ivanov;
+package alexander.ivanov.app;
 
 import alexander.ivanov.analyzer.Analyzer;
 

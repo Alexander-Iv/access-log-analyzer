@@ -4,21 +4,30 @@ import org.apache.commons.cli.*;
 
 public class CliHelper {
     private static final int TIME_DEFAULT = 45;
-    private static final float ACCESSIBILITY_DEFAULT = 99.9F;
+    private static final float ACCESSIBILITY_DEFAULT = 90.0F;
     private static final int LINES_DEFAULT = 100;
 
     private static final Options options = new Options();
+    private static final HelpFormatter helpFormatter = new HelpFormatter();
+    private static StringBuilder usage;
     private static CommandLine cli;
 
     static {
         buildOptions();
+        initHelp();
     }
 
     private static void buildOptions() {
-        options.addOption(buildOption("t", "time", Integer.class, ""))
-                .addOption(buildOption("a", "accessibility", Float.class, ""))
-                .addOption(buildOption("nl", "lines", Integer.class, ""))
-                .addOption(buildOption("f", "file", Integer.class, ""));
+        options.addOption(buildOption("t", "time", Integer.class,
+                "Acceptable response time, by default " + TIME_DEFAULT))
+                .addOption(buildOption("a", "accessibility", Float.class,
+                        "Minimum allowed accessibility level, by default " + ACCESSIBILITY_DEFAULT))
+                .addOption(buildOption("nl", "lines", Integer.class,
+                        "The number of analyzed lines, by default " + LINES_DEFAULT))
+                .addOption(buildOption("f", "file", Integer.class,
+                        "The name of the analyzed file"))
+                .addOption(buildHelpOption("h", "help", String.class,
+                        "Display this help and exit"));
     }
 
     private static Option buildOption(String shortName, String longName, Class<?> type, String desc) {
@@ -31,6 +40,18 @@ public class CliHelper {
                 //.required(true)
                 .desc(desc)
                 .build();
+    }
+
+    private static Option buildHelpOption(String shortName, String longName, Class<?> type, String desc) {
+        return Option.builder(shortName).longOpt(longName).type(type).desc(desc).build();
+    }
+
+    private static void initHelp() {
+        usage = new StringBuilder();
+        usage.append("\n");
+        usage.append("java -jar access-log-analyzer.jar [OPTIONS]").append("\n");
+        usage.append("cat <file-name> | java -jar access-log-analyzer.jar [OPTIONS]>").append("\n");
+        usage.append("\n");
     }
 
     private static String getValueAsString(String name) {
@@ -90,5 +111,18 @@ public class CliHelper {
 
     public static String getFileNameValue() {
         return getValueAsString("f");
+    }
+
+    public static boolean isHelpExists() {
+        return cli.hasOption("h");
+    }
+
+    public static void printHelp() {
+        helpFormatter.printHelp(
+                usage.toString(),
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ OPTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                options,
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        );
     }
 }
