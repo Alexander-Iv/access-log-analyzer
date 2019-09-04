@@ -44,10 +44,15 @@ public class ResultRecord {
 
     @Override
     public String toString() {
-        return "ResultRecord{" +
+        return String.format("%s %s %s",
+                DateFormatter.toStringFormat(startDate),
+                DateFormatter.toStringFormat(endDate),
+                String.format("%.02f", accessibility)
+        );
+        /*return "ResultRecord{" +
                 "startDate=" + DateFormatter.toStringFormat(startDate) +
                 ", endDate=" + DateFormatter.toStringFormat(endDate) +
                 ", accessibility=" + String.format("%.02f", accessibility) +
-                '}';
+                '}';*/
     }
 }
