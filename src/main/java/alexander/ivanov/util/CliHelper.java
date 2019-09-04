@@ -3,9 +3,9 @@ package alexander.ivanov.util;
 import org.apache.commons.cli.*;
 
 public class CliHelper {
-    private static final int TIME_DEFAULT = 45;
-    private static final float ACCESSIBILITY_DEFAULT = 90.0F;
-    private static final int LINES_DEFAULT = 100;
+    private static final int TIME_DEFAULT = Constants.TIME_DEFAULT.getIntValue();
+    private static final float ACCESSIBILITY_DEFAULT = Constants.ACCESSIBILITY_DEFAULT.getFloatValue();
+    private static final int LINES_DEFAULT = Constants.LINES_DEFAULT.getIntValue();
 
     private static final Options options = new Options();
     private static final HelpFormatter helpFormatter = new HelpFormatter();

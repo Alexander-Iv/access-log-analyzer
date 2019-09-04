@@ -21,19 +21,20 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     public Stream<LogRecord> convert(Stream<String> data) {
         return data
                 .map(s -> s.split(" "))
-                //.peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
+                .peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
                 .map(strings -> LogRecordMapper.map(new LogRecordDto(strings[3].substring(1), strings[8], strings[10])));
     }
 
     @Override
     public void analyze(Stream<LogRecord> data, Integer time, Float accessibility) {
+        resultRecords = new ArrayList<>();
         Map<Boolean, List<LogRecord>> result = data.collect(Collectors.partitioningBy(logRecord ->
             (logRecord.getHttpStatusCode() >= 500 && logRecord.getHttpStatusCode() < 600) || logRecord.getProcessingTimeMs() >= time)
         );
 
         result.forEach((aBoolean, logRecords) -> {
             if (aBoolean && !logRecords.isEmpty()) {
-                //printLogRecords(logRecords);
+                printLogRecords(logRecords);
 
                 long from = getMinDate(getTimeStream(logRecords));
                 long to = getMaxDate(getTimeStream(logRecords));
@@ -43,9 +44,10 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
                 float quantity = successCount + failureCount;
 
                 float currAccessibility = calcAccessibility(successCount, quantity);
-                if (currAccessibility < accessibility) {
+                logger.info("currAccessibility = {}", currAccessibility);
+                //if (currAccessibility < accessibility) {
                     resultRecords.add(new ResultRecord(new Date(from), new Date(to), currAccessibility));
-                }
+                //}
             }
         });
     }

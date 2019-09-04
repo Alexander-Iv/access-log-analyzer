@@ -48,6 +48,11 @@ public class AppImpl implements App {
         linesCount = CliHelper.getLinesValue();
         fileName = CliHelper.getFileNameValue();
 
+        logger.info("time = {}", time);
+        logger.info("accessibility = {}", accessibility);
+        logger.info("linesCount = {}", linesCount);
+        logger.info("fileName = {}", fileName);
+
         analyzer = new LogRecordAnalyzerImpl();
         bufferedReader = new BufferedReaderCreatorImpl(fileName).getReader();
     }
@@ -67,6 +72,7 @@ public class AppImpl implements App {
     }
 
     private void analyzeInputStream() {
+        logger.info("bufferedReader = {}", bufferedReader);
         try (LineNumberReader reader = new LineNumberReader(bufferedReader)) {
             analyzeNonEmptyInputStream(reader);
         } catch (IOException e) {
@@ -91,7 +97,6 @@ public class AppImpl implements App {
                 }
 
                 if (tmp == null) {
-                    analyzer.printResult();
                     return;
                 }
             }
@@ -101,5 +106,6 @@ public class AppImpl implements App {
     private void analyze(LogRecordAnalyzer analyzer, Stream<String> inputStream) {
         Stream<LogRecord> logRecordsAsStream = analyzer.convert(inputStream);
         analyzer.analyze(logRecordsAsStream, time, accessibility);
+        analyzer.printResult();
     }
 }
