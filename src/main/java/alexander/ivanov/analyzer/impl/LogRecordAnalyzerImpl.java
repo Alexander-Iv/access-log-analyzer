@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     private static final Logger logger = LoggerFactory.getLogger(LogRecordAnalyzerImpl.class);
-    private static final List<ResultRecord> resultRecords = new ArrayList<>();
+    private static List<ResultRecord> resultRecords = new ArrayList<>();
 
     @Override
     public Stream<LogRecord> convert(Stream<String> data) {
@@ -58,6 +58,11 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
         resultRecords.forEach(resultRecord -> {
             logger.info("{}", resultRecord);
         });
+    }
+
+    @Override
+    public List<ResultRecord> getResult() {
+        return resultRecords;
     }
 
     private void printLogRecords(List<LogRecord> logRecords) {
