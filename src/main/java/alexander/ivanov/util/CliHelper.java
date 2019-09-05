@@ -6,6 +6,7 @@ public class CliHelper {
     private static final float TIME_DEFAULT = Constants.TIME_DEFAULT.getFloatValue();
     private static final float ACCESSIBILITY_DEFAULT = Constants.ACCESSIBILITY_DEFAULT.getFloatValue();
     private static final int LINES_DEFAULT = Constants.LINES_DEFAULT.getIntValue();
+    private static final int TEST_MODE = Constants.TEST_MODE.getIntValue();
 
     private static final Options options = new Options();
     private static final HelpFormatter helpFormatter = new HelpFormatter();
@@ -26,6 +27,8 @@ public class CliHelper {
                         "The number of analyzed lines, by default " + LINES_DEFAULT))
                 .addOption(buildOption("f", "file", Integer.class,
                         "The name of the analyzed file"))
+                .addOption(buildOption("tm", "test", Integer.class,
+                        "Enables test mode, by default disabled(" + TEST_MODE + "). To enable testMode use -tm 1"))
                 .addOption(buildHelpOption("h", "help", String.class,
                         "Display this help and exit"));
     }
@@ -50,7 +53,7 @@ public class CliHelper {
         usage = new StringBuilder();
         usage.append("\n");
         usage.append("java -jar access-log-analyzer.jar [OPTIONS]").append("\n");
-        usage.append("cat <file-name> | java -jar access-log-analyzer.jar [OPTIONS]>").append("\n");
+        usage.append("<cat|type> <file-name> | java -jar access-log-analyzer.jar [OPTIONS]>").append("\n");
         usage.append("\n");
     }
 
@@ -111,6 +114,11 @@ public class CliHelper {
 
     public static String getFileNameValue() {
         return getValueAsString("f");
+    }
+
+    public static int getTestModeValue() {
+        String valueAsString = getValueAsString("tm");
+        return parseInt(valueAsString, TEST_MODE);
     }
 
     public static boolean isHelpExists() {

@@ -15,20 +15,19 @@ import java.util.stream.Stream;
 
 public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     private static final Logger logger = LoggerFactory.getLogger(LogRecordAnalyzerImpl.class);
-    private List<ResultRecord> resultRecords = new ArrayList<>();
+    private List<ResultRecord> resultRecords;
     private List<ResultRecord> fullResultRecords = new ArrayList<>();
 
     @Override
     public Stream<LogRecord> convert(Stream<String> data) {
         return data
                 .map(s -> s.split(" "))
-                //.peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
                 .map(strings -> LogRecordMapper.map(new LogRecordDto(strings[3].substring(1), strings[8], strings[10])));
     }
 
     @Override
-    public void analyze(Stream<LogRecord> data, Float time, Float accessibility) {
-        resultRecords = new ArrayList<>();
+    public void analyze(Stream<LogRecord> data, Float time, Float accessibility, Integer linesCount, Integer testMode) {
+        resultRecords = new ArrayList<>(linesCount);
         Map<Boolean, List<LogRecord>> result = data.collect(Collectors.partitioningBy(logRecord ->
             (logRecord.getHttpStatusCode() >= 500 && logRecord.getHttpStatusCode() < 600) || logRecord.getProcessingTimeMs() > time)
         );
@@ -44,11 +43,12 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
                 float quantity = successCount + failureCount;
 
                 float currAccessibility = calcAccessibility(successCount, quantity);
-                logger.info("currAccessibility = {}", currAccessibility);
                 if (currAccessibility <= accessibility) {
                     resultRecords.add(new ResultRecord(new Date(from), new Date(to), currAccessibility));
-                    fullResultRecords.addAll(resultRecords);
-                    printLogRecords(logRecords);
+                    if (testMode == 1) {
+                        fullResultRecords.addAll(resultRecords);
+                        printLogRecords(logRecords);
+                    }
                 }
             }
         });

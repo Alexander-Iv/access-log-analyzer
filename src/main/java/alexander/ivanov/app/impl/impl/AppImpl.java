@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +28,7 @@ public class AppImpl implements App {
     private float time;
     private float accessibility;
     private int linesCount;
+    private int testMode;
     private String fileName;
 
     private LogRecordAnalyzer analyzer;
@@ -47,12 +49,16 @@ public class AppImpl implements App {
         time = CliHelper.getTimeValue();
         accessibility = CliHelper.getAccessibilityValue();
         linesCount = CliHelper.getLinesValue();
+        testMode = CliHelper.getTestModeValue();
         fileName = CliHelper.getFileNameValue();
 
-        logger.info("time = {}", time);
-        logger.info("accessibility = {}", accessibility);
-        logger.info("linesCount = {}", linesCount);
-        logger.info("fileName = {}", fileName);
+        if (testMode == 1) {
+            logger.info("args = {}", Arrays.asList(args));
+            logger.info("time = {}", time);
+            logger.info("accessibility = {}", accessibility);
+            logger.info("linesCount = {}", linesCount);
+            logger.info("fileName = {}", fileName);
+        }
 
         analyzer = new LogRecordAnalyzerImpl();
         bufferedReader = new BufferedReaderCreatorImpl(fileName).getReader();
@@ -73,7 +79,6 @@ public class AppImpl implements App {
     }
 
     private void analyzeInputStream() {
-        logger.info("bufferedReader = {}", bufferedReader);
         try (LineNumberReader reader = new LineNumberReader(bufferedReader)) {
             analyzeNonEmptyInputStream(reader);
         } catch (IOException e) {
@@ -99,12 +104,16 @@ public class AppImpl implements App {
                 analyze(analyzer, lines.stream());
                 lines.clear();
             }
+            if (testMode == 1) {
+                logger.info("all records count = {}", analyzer.getResult().size());
+                logger.info("**********************");
+            }
         }
     }
 
     private void analyze(LogRecordAnalyzer analyzer, Stream<String> inputStream) {
         Stream<LogRecord> logRecordsAsStream = analyzer.convert(inputStream);
-        analyzer.analyze(logRecordsAsStream, time, accessibility);
+        analyzer.analyze(logRecordsAsStream, time, accessibility, linesCount, testMode);
         analyzer.printResult();
     }
 }

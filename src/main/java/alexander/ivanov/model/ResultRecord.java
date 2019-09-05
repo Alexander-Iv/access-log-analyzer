@@ -1,6 +1,7 @@
 package alexander.ivanov.model;
 
 import alexander.ivanov.util.DateFormatter;
+import alexander.ivanov.util.FloatFormatter;
 
 import java.util.Date;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class ResultRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResultRecord that = (ResultRecord) o;
-        return Float.compare(that.accessibility, accessibility) == 0 &&
+        return Float.compare(FloatFormatter.transformFormat(that.accessibility), FloatFormatter.transformFormat(accessibility)) == 0 &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate);
     }
@@ -63,12 +64,7 @@ public class ResultRecord {
         return String.format("%s %s %s",
                 DateFormatter.toStringFormat(startDate),
                 DateFormatter.toStringFormat(endDate),
-                String.format("%.02f", accessibility)
+                FloatFormatter.toStringForamt(accessibility)
         );
-        /*return "ResultRecord{" +
-                "startDate=" + DateFormatter.toStringFormat(startDate) +
-                ", endDate=" + DateFormatter.toStringFormat(endDate) +
-                ", accessibility=" + String.format("%.02f", accessibility) +
-                '}';*/
     }
 }

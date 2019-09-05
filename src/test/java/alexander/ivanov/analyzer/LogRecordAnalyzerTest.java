@@ -19,7 +19,7 @@ class LogRecordAnalyzerTest {
 
     @Test
     void analyzeAboveTimeThreshold() {
-        String[] args = new String[]{"-t", "32", "-a", "100.0", "-nl", "2", "-f", "src/test/resources/access-log-for-time-threshold-checks"};
+        String[] args = new String[]{"-t", "32", "-a", "100.0", "-nl", "2", "-f", "src/test/resources/access-log-for-time-threshold-checks", "-tm", "1"};
         App app = new AppImpl(args);
 
         app.init();
@@ -29,7 +29,7 @@ class LogRecordAnalyzerTest {
         analyzer.getResult().forEach(resultRecord -> logger.info("resultRecord = {}", resultRecord));
 
         List<ResultRecord> expected = Arrays.asList(
-                new ResultRecord(DateFormatter.toDateFormat("14/06/2013:16:47:02"), DateFormatter.toDateFormat("14/06/2013:16:47:02"), 100.00F),
+                new ResultRecord(DateFormatter.toDateFormat("14/06/2013:16:47:02"), DateFormatter.toDateFormat("14/06/2013:16:47:02"), 0.00F),
                 new ResultRecord(DateFormatter.toDateFormat("14/06/2014:16:47:02"), DateFormatter.toDateFormat("14/06/2014:16:47:02"), 50.00F),
                 new ResultRecord(DateFormatter.toDateFormat("14/06/2017:16:47:02"), DateFormatter.toDateFormat("14/06/2017:16:47:02"), 50.00F)
         );
@@ -39,7 +39,7 @@ class LogRecordAnalyzerTest {
 
     @Test
     void analyzeBelowTimeThreshold() {
-        String[] args = new String[]{"-t", "50", "-a", "100.0", "-nl", "5", "-f", "src/test/resources/access-log-for-time-threshold-checks"};
+        String[] args = new String[]{"-t", "50", "-a", "100.0", "-nl", "5", "-f", "src/test/resources/access-log-for-time-threshold-checks", "-tm", "1"};
         App app = new AppImpl(args);
 
         app.init();
@@ -55,7 +55,7 @@ class LogRecordAnalyzerTest {
 
     @Test
     void analyzeHttpStatus500() {
-        String[] args = new String[]{"-t", "999", "-a", "100.0", "-nl", "5", "-f", "src/test/resources/access-log-for-http-status-checks"};
+        String[] args = new String[]{"-t", "999", "-a", "100.0", "-nl", "5", "-f", "src/test/resources/access-log-for-http-status-checks", "-tm", "1"};
         App app = new AppImpl(args);
 
         app.init();

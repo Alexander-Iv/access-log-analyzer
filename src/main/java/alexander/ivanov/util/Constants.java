@@ -3,7 +3,8 @@ package alexander.ivanov.util;
 public enum Constants {
     TIME_DEFAULT(45.0F),
     ACCESSIBILITY_DEFAULT(90.0F),
-    LINES_DEFAULT(100);
+    LINES_DEFAULT(100),
+    TEST_MODE(0);
 
     private Number value;
 
