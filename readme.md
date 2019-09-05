@@ -27,7 +27,11 @@
 
 ##### Примеры использования программы:
 ```
-$ cat access.log | java -jar access-log-analyzer.jar [OPTIONS]>
+$ cat access.log | java -jar access-log-analyzer.jar [OPTIONS]
+
+$ cat access.log | java -jar access-log-analyzer.jar -a 90.0 -t 30
+
+$ java -jar access-log-analyzer.jar -a 90.0 -t 30 -f access.log
 ```
 
 Описание опциий можно посмотреть, набрав: 
