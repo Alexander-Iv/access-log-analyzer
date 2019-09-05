@@ -15,26 +15,26 @@ import java.util.stream.Stream;
 
 public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     private static final Logger logger = LoggerFactory.getLogger(LogRecordAnalyzerImpl.class);
-    private static List<ResultRecord> resultRecords = new ArrayList<>();
+    private List<ResultRecord> resultRecords = new ArrayList<>();
+    private List<ResultRecord> fullResultRecords = new ArrayList<>();
 
     @Override
     public Stream<LogRecord> convert(Stream<String> data) {
         return data
                 .map(s -> s.split(" "))
-                .peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
+                //.peek(strings -> logger.info("Arrays.asList(strings) = {}", Arrays.asList(strings)))
                 .map(strings -> LogRecordMapper.map(new LogRecordDto(strings[3].substring(1), strings[8], strings[10])));
     }
 
     @Override
-    public void analyze(Stream<LogRecord> data, Integer time, Float accessibility) {
+    public void analyze(Stream<LogRecord> data, Float time, Float accessibility) {
         resultRecords = new ArrayList<>();
         Map<Boolean, List<LogRecord>> result = data.collect(Collectors.partitioningBy(logRecord ->
-            (logRecord.getHttpStatusCode() >= 500 && logRecord.getHttpStatusCode() < 600) || logRecord.getProcessingTimeMs() >= time)
+            (logRecord.getHttpStatusCode() >= 500 && logRecord.getHttpStatusCode() < 600) || logRecord.getProcessingTimeMs() > time)
         );
 
         result.forEach((aBoolean, logRecords) -> {
             if (aBoolean && !logRecords.isEmpty()) {
-                printLogRecords(logRecords);
 
                 long from = getMinDate(getTimeStream(logRecords));
                 long to = getMaxDate(getTimeStream(logRecords));
@@ -45,21 +45,27 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
 
                 float currAccessibility = calcAccessibility(successCount, quantity);
                 logger.info("currAccessibility = {}", currAccessibility);
-                //if (currAccessibility < accessibility) {
+                if (currAccessibility <= accessibility) {
                     resultRecords.add(new ResultRecord(new Date(from), new Date(to), currAccessibility));
-                //}
+                    fullResultRecords.addAll(resultRecords);
+                    printLogRecords(logRecords);
+                }
             }
         });
     }
 
     @Override
     public void printResult() {
-        resultRecords.sort(Comparator.comparing(o -> o.startDate));
-        resultRecords.forEach(System.out::println);
+        getAscSortedResult(resultRecords).forEach(System.out::println);
     }
 
     @Override
     public List<ResultRecord> getResult() {
+        return getAscSortedResult(fullResultRecords);
+    }
+
+    private List<ResultRecord> getAscSortedResult(List<ResultRecord> resultRecords) {
+        resultRecords.sort(Comparator.comparing(o -> o.startDate));
         return resultRecords;
     }
 

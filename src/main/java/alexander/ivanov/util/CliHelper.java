@@ -3,7 +3,7 @@ package alexander.ivanov.util;
 import org.apache.commons.cli.*;
 
 public class CliHelper {
-    private static final int TIME_DEFAULT = Constants.TIME_DEFAULT.getIntValue();
+    private static final float TIME_DEFAULT = Constants.TIME_DEFAULT.getFloatValue();
     private static final float ACCESSIBILITY_DEFAULT = Constants.ACCESSIBILITY_DEFAULT.getFloatValue();
     private static final int LINES_DEFAULT = Constants.LINES_DEFAULT.getIntValue();
 
@@ -18,7 +18,7 @@ public class CliHelper {
     }
 
     private static void buildOptions() {
-        options.addOption(buildOption("t", "time", Integer.class,
+        options.addOption(buildOption("t", "time", Float.class,
                 "Acceptable response time, by default " + TIME_DEFAULT))
                 .addOption(buildOption("a", "accessibility", Float.class,
                         "Minimum allowed accessibility level, by default " + ACCESSIBILITY_DEFAULT))
@@ -94,7 +94,7 @@ public class CliHelper {
         return cli;
     }
 
-    public static int getTimeValue() {
+    public static float getTimeValue() {
         String valueAsString = getValueAsString("t");
         return parseInt(valueAsString, TIME_DEFAULT);
     }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AppImpl implements App {
@@ -23,7 +24,7 @@ public class AppImpl implements App {
 
     private String[] args;
 
-    private int time;
+    private float time;
     private float accessibility;
     private int linesCount;
     private String fileName;
@@ -84,21 +85,19 @@ public class AppImpl implements App {
     private void analyzeNonEmptyInputStream(LineNumberReader reader) throws IOException {
         if (reader.ready()) {
             List<String> lines = new ArrayList<>(linesCount);
-            while (true) {
-                String tmp = null;
-                while ((tmp = reader.readLine()) != null && reader.getLineNumber() < linesCount) {
-                    lines.add(tmp);
-                }
 
-                if (!lines.isEmpty()) {
+            reader.lines().forEach(s -> {
+                lines.add(s);
+
+                if (reader.getLineNumber()%linesCount == 0 ) {
                     analyze(analyzer, lines.stream());
-                    reader.setLineNumber(0);
                     lines.clear();
                 }
+            });
 
-                if (tmp == null) {
-                    return;
-                }
+            if (!lines.isEmpty()) {
+                analyze(analyzer, lines.stream());
+                lines.clear();
             }
         }
     }

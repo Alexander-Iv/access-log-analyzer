@@ -3,6 +3,7 @@ package alexander.ivanov.model;
 import alexander.ivanov.util.DateFormatter;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class ResultRecord {
     public Date startDate;
@@ -40,6 +41,21 @@ public class ResultRecord {
 
     public void setAccessibility(float accessibility) {
         this.accessibility = accessibility;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResultRecord that = (ResultRecord) o;
+        return Float.compare(that.accessibility, accessibility) == 0 &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startDate, endDate, accessibility);
     }
 
     @Override
