@@ -1,9 +1,9 @@
 package alexander.ivanov.app;
 
-import alexander.ivanov.analyzer.Analyzer;
+import alexander.ivanov.analyzer.LogRecordAnalyzer;
 
 public interface App {
     void init();
     void run();
-    Analyzer<?,?> getAnalyzer();
+    LogRecordAnalyzer getAnalyzer();
 }

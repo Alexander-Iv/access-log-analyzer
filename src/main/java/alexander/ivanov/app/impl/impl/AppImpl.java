@@ -1,9 +1,8 @@
 package alexander.ivanov.app.impl.impl;
 
-import alexander.ivanov.app.App;
-import alexander.ivanov.analyzer.Analyzer;
 import alexander.ivanov.analyzer.LogRecordAnalyzer;
 import alexander.ivanov.analyzer.impl.LogRecordAnalyzerImpl;
+import alexander.ivanov.app.App;
 import alexander.ivanov.model.LogRecord;
 import alexander.ivanov.reader.impl.BufferedReaderCreatorImpl;
 import alexander.ivanov.util.CliHelper;
@@ -17,7 +16,6 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AppImpl implements App {
@@ -74,7 +72,7 @@ public class AppImpl implements App {
     }
 
     @Override
-    public Analyzer<?, ?> getAnalyzer() {
+    public LogRecordAnalyzer getAnalyzer() {
         return analyzer;
     }
 
