@@ -1,10 +1,8 @@
-package alexander.ivanov.reader.impl;
-
-import alexander.ivanov.reader.Reader;
+package alexander.ivanov.reader;
 
 import java.io.BufferedReader;
 
-public class InputStreamReader implements Reader<BufferedReader> {
+public class InputStreamBufferedReader implements Reader<BufferedReader> {
     @Override
     public BufferedReader getReader() {
         return new BufferedReader(new java.io.InputStreamReader(System.in));

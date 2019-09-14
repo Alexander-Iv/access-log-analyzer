@@ -1,14 +1,18 @@
 package alexander.ivanov.analyzer;
 
-import alexander.ivanov.model.LogRecord;
 import alexander.ivanov.model.ResultRecord;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Performs analyze text data stream.
+ * Collects results in ordered collection
+ *
+ * <p>Example:
+ * @see alexander.ivanov.analyzer.impl.LogRecordAnalyzerImpl
+ */
 public interface LogRecordAnalyzer {
-    Stream<LogRecord> convert(Stream<String> data);
-    void analyze(Stream<LogRecord> data, Float time, Float accessibility, Integer linesCount, Integer testMode);
-    void printResult();
-    List<ResultRecord> getResult();
+    void analyze(Stream<String> data);
+    List<ResultRecord> getResultRecords();
 }

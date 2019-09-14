@@ -1,9 +1,6 @@
-package alexander.ivanov.reader.impl;
+package alexander.ivanov.reader;
 
-import alexander.ivanov.reader.Reader;
 import alexander.ivanov.util.ErrorHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,12 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileReader implements Reader<BufferedReader> {
-    private static final Logger logger = LoggerFactory.getLogger(FileReader.class);
+public class FileBufferedReader implements Reader<BufferedReader> {
     private static final String FILE_NOT_FOUND = "File not found!";
     private String fileName;
 
-    public FileReader(String fileName) {
+    public FileBufferedReader(String fileName) {
         this.fileName = fileName;
     }
 
@@ -41,7 +37,7 @@ public class FileReader implements Reader<BufferedReader> {
     }
 
     private Path getFilePathFromCurrentDir(String fileName) {
-        return Paths.get(/*"./", */fileName);
+        return Paths.get(fileName);
     }
 
     private boolean isFileExists(Path path) {
