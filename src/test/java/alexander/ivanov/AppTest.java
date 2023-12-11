@@ -13,7 +13,7 @@ class AppTest {
 
     @Test
     void runAppWithDataFromFile() {
-        String[] args = new String[]{"-t", "40", "-a", "90.0", "-f", "access.log"};
+        String[] args = new String[]{"-t", "40", "-a", "90.0", "-f", "src/test/resources/access.log"};
         assertDoesNotThrow(() -> Main.main(args));
     }
 }

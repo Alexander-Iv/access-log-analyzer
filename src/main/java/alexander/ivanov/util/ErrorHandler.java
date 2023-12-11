@@ -10,12 +10,10 @@ public class ErrorHandler {
     private static final Logger logger = LoggerFactory.getLogger(ErrorHandler.class);
 
     public static void printStackTrace(StackTraceElement[] elements) {
-        logger.error(
-                "ERRORS:\n{}",
-                Arrays.asList(elements)
-                        .stream()
-                        .map(stackTraceElement -> stackTraceElement + "\n")
-                        .collect(Collectors.toList())
-        );
+        var messages = Arrays.stream(elements)
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n"));
+
+        logger.error("ERRORS:\n{}", messages);
     }
 }

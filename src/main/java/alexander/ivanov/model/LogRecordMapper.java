@@ -7,15 +7,17 @@ import org.modelmapper.TypeMap;
 
 import java.util.Date;
 
-public class LogRecordMapper {
+public enum LogRecordMapper {
+    INSTANCE;
+
     private final TypeMap<LogRecordDto, LogRecord> mapper;
 
-    public LogRecordMapper() {
+    LogRecordMapper() {
         this(new ModelMapper());
     }
 
-    public LogRecordMapper(ModelMapper modelMapper) {
-        this.mapper = modelMapper.createTypeMap(LogRecordDto.class, LogRecord.class)
+    LogRecordMapper(ModelMapper modelMapper) {
+        mapper = modelMapper.createTypeMap(LogRecordDto.class, LogRecord.class)
                 .addMappings(mapping -> mapping.using(new LogRecordDateConverter())
                         .map(LogRecordDto::getDate, LogRecord::setDate));
     }
@@ -25,8 +27,7 @@ public class LogRecordMapper {
     }
 
     public static LogRecord map(LogRecordDto logRecordDto) {
-        return new LogRecordMapper()
-                .fromDto(logRecordDto);
+        return INSTANCE.fromDto(logRecordDto);
     }
 
     private static class LogRecordDateConverter extends AbstractConverter<String, Date> {
