@@ -43,6 +43,26 @@ public class LogRecord {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LogRecord)) return false;
+
+        LogRecord logRecord = (LogRecord) o;
+
+        if (httpStatusCode != logRecord.httpStatusCode) return false;
+        if (Float.compare(processingTimeMs, logRecord.processingTimeMs) != 0) return false;
+        return date.equals(logRecord.date);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = date.hashCode();
+        result = 31 * result + (int) httpStatusCode;
+        result = 31 * result + (processingTimeMs != 0.0f ? Float.floatToIntBits(processingTimeMs) : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "LogRecord{" +
                 "date=" + DateFormatter.toStringFormat(date) +
