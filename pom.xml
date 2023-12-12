@@ -48,6 +48,12 @@
       <artifactId>commons-cli</artifactId>
       <version>1.6.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -77,7 +83,7 @@
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>alexander.ivanov.Main</mainClass>
+                  <mainClass>ru.aaivn.loganalyzer.Application</mainClass>
                 </transformer>
               </transformers>
             </configuration>
