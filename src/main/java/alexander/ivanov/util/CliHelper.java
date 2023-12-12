@@ -1,6 +1,11 @@
 package alexander.ivanov.util;
 
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 public class CliHelper {
     private static final float TIME_DEFAULT = Constants.TIME_DEFAULT.getFloatValue();
@@ -20,7 +25,7 @@ public class CliHelper {
 
     private static void buildOptions() {
         options.addOption(buildOption("t", "time", Float.class,
-                "Acceptable response time, by default " + TIME_DEFAULT))
+                        "Acceptable response time, by default " + TIME_DEFAULT))
                 .addOption(buildOption("a", "accessibility", Float.class,
                         "Minimum allowed accessibility level, by default " + ACCESSIBILITY_DEFAULT))
                 .addOption(buildOption("nl", "lines", Integer.class,

@@ -10,9 +10,11 @@ import java.util.stream.Stream;
  * Collects results in ordered collection
  *
  * <p>Example:
+ *
  * @see alexander.ivanov.analyzer.impl.LogRecordAnalyzerImpl
  */
 public interface LogRecordAnalyzer {
     void analyze(Stream<String> data);
+
     List<ResultRecord> getResultRecords();
 }

@@ -8,7 +8,11 @@ import alexander.ivanov.model.ResultRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -56,7 +60,7 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
                         logRecord ->
                                 (logRecord.getHttpStatusCode() >= minHttpStatusCode
                                         && logRecord.getHttpStatusCode() < maxHttpStatusCode)
-                                || logRecord.getProcessingTimeMs() > time
+                                        || logRecord.getProcessingTimeMs() > time
                 )
         );
     }
@@ -86,7 +90,7 @@ public class LogRecordAnalyzerImpl implements LogRecordAnalyzer {
     }
 
     private float calcAccessibility(float current, float quantity) {
-        return current/quantity*100;
+        return current / quantity * 100;
     }
 
     private LongStream getTimeStream(List<LogRecord> records) {

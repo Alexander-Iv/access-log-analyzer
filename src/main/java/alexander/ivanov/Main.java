@@ -85,7 +85,7 @@ public class Main {
                 reader.lines().forEach(s -> {
                     lines.add(s);
 
-                    if (reader.getLineNumber()%linesCount == 0 ) {
+                    if (reader.getLineNumber() % linesCount == 0) {
                         analyzer.analyze(lines.stream());
                         lines.clear();
                     }
